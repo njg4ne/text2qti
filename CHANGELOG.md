@@ -44,7 +44,7 @@ Directed by Nicholas, carried out with Claude Code:
 - Added the missing **non-numeric short-answer** (fill-in-the-blank) example to the guide, after Nicholas pointed out the gap.
 - Checked that every guide example compiles with the real text2qti package.
 
-### 3. Redesign, accessibility, and Canvas guide (2026-10-02, commit `227f9e5`)
+### 3. Redesign, accessibility, and Canvas guide (2026-10-02, commit `0c2272b`)
 
 Nicholas's instructions: use CSS best practices in the spirit of Tolinski's article; use W&L colors; make the app accessible with good contrast and readable text sizes; get rid of the page scrollbar at normal zoom; write a simple help page on importing the .zip into Canvas (enable New Quizzes, item bank, share with the course, ⋯ → Import Content), linked from the app; split the code into readable files with comments on caveats, performance, security, and possible bugs.
 
@@ -60,7 +60,7 @@ What was built in response:
 - Placed the editor first in the HTML for screen readers and phones. On wide screens CSS still shows it in the right-hand column.
 - Verified end to end in headless Chrome: the page loads, the example compiles, the .zip downloads, and syntax errors are reported with line numbers.
 
-### 4. Licensing, notices, and this audit trail (2026-10-02)
+### 4. Licensing, notices, and this audit trail (2026-10-02, commit `bcc9235`)
 
 Nicholas's instructions: choose the most suitable license that stops others from profiting from the code without open-sourcing their changes; list all other licenses and intellectual property as compliantly as possible; state that the intended use is education at public and non-profit institutions; show the license as a readable page in the app's style; add this history page.
 
@@ -71,7 +71,7 @@ What was built in response:
 - Added `license.html` and `history.html`. Both render `NOTICE.md`, `LICENSE`, and this file directly from the repository text, so the website and GitHub always show the same words.
 - Added a "Source code" link and license links to every page footer, as AGPL section 13 expects for software used over a network.
 
-### 5. Upgrade PyScript to 2026.7.3 (2026-10-02)
+### 5. Upgrade PyScript to 2026.7.3 (2026-10-02, commit `e34f3e2`)
 
 Nicholas asked why the app still used PyScript 2024.1.1 when 2026.7.3 was out. There was no good reason: the version had been carried over from the Google prototype without being checked. The upgrade:
 
@@ -79,6 +79,10 @@ Nicholas asked why the app still used PyScript 2024.1.1 when 2026.7.3 was out. T
 - Switched `py/main.py` to PyScript's current API (`from pyscript import document, when, fetch` and `pyscript.ffi.to_js`). The `@when` decorator replaces the manual event-proxy bookkeeping.
 - Stopped listing `py/quizbuild.py` under `[files]` in `pyscript.toml`. Since 2026.7, PyScript turns off the browser's package cache when the config lists local files, so `main.py` now fetches the module itself and the cache stays on.
 - Re-ran the browser tests: the page loads, the example compiles, the .zip downloads and is valid, errors show their line numbers, and the layout still fits the window at every tested size.
+
+### 6. Custom domain (2026-10-02, commit `c051df7`)
+
+Nicholas added a `CNAME` file on GitHub so GitHub Pages serves the site at `text2qti.gardella.cc`. Claude's local commits were then rebased on top of that commit before pushing, so the history stays linear.
 
 ## How oversight worked
 
