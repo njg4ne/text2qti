@@ -7,7 +7,8 @@ Flow:
   1. PyScript downloads Pyodide + text2qti (see pyscript.toml), then runs
      this file. Until then both buttons are `disabled` in the HTML, so the
      user can't click something that has no handler yet.
-  2. We attach click handlers and flip the status to "ready".
+  2. We fetch py/quizbuild.py, import it, attach the click handlers
+     (via @when) and flip the status to "ready".
   3. On "Download", quizbuild.build_qti_zip() returns bytes, which we wrap
      in a Blob and hand to the browser as a download.
 
@@ -23,12 +24,21 @@ Caveats / known limitations:
     tells users to upload the .zip itself, not the extracted folder.
 """
 
-import js
-from pyodide.ffi import create_proxy, to_js
+import sys
 
-from quizbuild import Text2qtiError, build_qti_zip
+from pyscript import document, fetch, when, window
+from pyscript.ffi import to_js
 
-document = js.document
+# Load our helper module. PyScript's [files] config could copy it in for us,
+# but since PyScript 2026.7 listing local files in the config turns off the
+# browser's package cache, which would make every visit re-download text2qti.
+# Fetching it here keeps that cache. (Top-level await is allowed in PyScript.)
+_source = await (await fetch("py/quizbuild.py")).text()  # noqa: F704
+with open("quizbuild.py", "w", encoding="utf-8") as _f:
+    _f.write(_source)
+sys.path.insert(0, ".")
+
+from quizbuild import Text2qtiError, build_qti_zip  # noqa: E402
 
 quiz_input = document.getElementById("quiz-input")
 generate_btn = document.getElementById("generate-btn")
@@ -40,11 +50,6 @@ error_output = document.getElementById("error-output")
 # download rather than immediately after link.click(): some browsers start
 # the download asynchronously, and revoking too early can cancel it.
 _last_url = None
-
-# Keep proxies alive for the lifetime of the page. If a create_proxy()
-# result were garbage-collected, the JS event listener would call into a
-# destroyed object and throw.
-_proxies = []
 
 
 def set_status(message: str, state: str) -> None:
@@ -68,13 +73,11 @@ def clear_error() -> None:
 def trigger_download(filename: str, data: bytes) -> None:
     global _last_url
     if _last_url is not None:
-        js.URL.revokeObjectURL(_last_url)
+        window.URL.revokeObjectURL(_last_url)
 
-    blob = js.Blob.new(
-        [js.Uint8Array.new(data)],
-        to_js({"type": "application/zip"}, dict_converter=js.Object.fromEntries),
-    )
-    _last_url = js.URL.createObjectURL(blob)
+    # pyscript.ffi.to_js turns the dict into a plain JS object.
+    blob = window.Blob.new([window.Uint8Array.new(data)], to_js({"type": "application/zip"}))
+    _last_url = window.URL.createObjectURL(blob)
 
     link = document.createElement("a")
     link.href = _last_url
@@ -82,6 +85,9 @@ def trigger_download(filename: str, data: bytes) -> None:
     link.click()  # a detached <a> works in all current browsers
 
 
+# @when attaches the handler and keeps its JS proxy alive for us (older
+# PyScript needed manual create_proxy() bookkeeping).
+@when("click", "#generate-btn")
 def on_generate(_event) -> None:
     clear_error()
     try:
@@ -101,6 +107,7 @@ def on_generate(_event) -> None:
     set_status(f"Downloaded {filename}. Next: import it into Canvas (link below).", "success")
 
 
+@when("click", "#example-btn")
 def on_load_example(_event) -> None:
     # The guide's <pre data-example> blocks double as the sample quiz.
     blocks = document.querySelectorAll("pre[data-example]")
@@ -109,13 +116,7 @@ def on_load_example(_event) -> None:
     clear_error()
 
 
-def mount() -> None:
-    for button, handler in ((generate_btn, on_generate), (example_btn, on_load_example)):
-        proxy = create_proxy(handler)
-        _proxies.append(proxy)
-        button.addEventListener("click", proxy)
-        button.disabled = False
-    set_status("Ready.", "ready")
-
-
-mount()
+# Handlers are attached; now let people use the buttons.
+generate_btn.disabled = False
+example_btn.disabled = False
+set_status("Ready.", "ready")

@@ -71,6 +71,15 @@ What was built in response:
 - Added `license.html` and `history.html`. Both render `NOTICE.md`, `LICENSE`, and this file directly from the repository text, so the website and GitHub always show the same words.
 - Added a "Source code" link and license links to every page footer, as AGPL section 13 expects for software used over a network.
 
+### 5. Upgrade PyScript to 2026.7.3 (2026-10-02)
+
+Nicholas asked why the app still used PyScript 2024.1.1 when 2026.7.3 was out. There was no good reason: the version had been carried over from the Google prototype without being checked. The upgrade:
+
+- Moved to PyScript 2026.7.3, which brings Pyodide 314.0.3 (Python 3.14) in place of Pyodide 0.24.1 (Python 3.11).
+- Switched `py/main.py` to PyScript's current API (`from pyscript import document, when, fetch` and `pyscript.ffi.to_js`). The `@when` decorator replaces the manual event-proxy bookkeeping.
+- Stopped listing `py/quizbuild.py` under `[files]` in `pyscript.toml`. Since 2026.7, PyScript turns off the browser's package cache when the config lists local files, so `main.py` now fetches the module itself and the cache stays on.
+- Re-ran the browser tests: the page loads, the example compiles, the .zip downloads and is valid, errors show their line numbers, and the layout still fits the window at every tested size.
+
 ## How oversight worked
 
 - Every change started from a written instruction by Nicholas. The AI tools did not choose the project's goals, its license, or what was published.

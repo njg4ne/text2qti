@@ -109,14 +109,14 @@ Distributed under the BSD 3-Clause License, with the same conditions and
 disclaimer as reproduced for text2qti above.
 ```
 
-### PyScript 2024.1.1: runs Python in the page
+### PyScript 2026.7.3: runs Python in the page
 
 - License: Apache License 2.0
 - Source: [https://github.com/pyscript/pyscript](https://github.com/pyscript/pyscript)
 - Loaded from: pyscript.net
 - License text: [https://www.apache.org/licenses/LICENSE-2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
-### Pyodide 0.24.1: CPython compiled to WebAssembly
+### Pyodide 314.0.3: CPython compiled to WebAssembly
 
 - License: Mozilla Public License 2.0. Pyodide bundles CPython, which is under the Python Software Foundation License, and other packages under their own licenses.
 - Source: [https://github.com/pyodide/pyodide](https://github.com/pyodide/pyodide)

@@ -13,7 +13,7 @@
       The version is pinned so an upstream release cannot silently change
       behaviour. See README.md for performance and security notes.
     -->
-    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+    <script type="module" src="https://pyscript.net/releases/2026.7.3/core.js"></script>
 </head>
 <body>
     <a class="skip-link" href="#quiz-input">Skip to the quiz editor</a>
@@ -135,7 +135,7 @@ ____</pre>
     </noscript>
 
     <!-- The Python side of the app: see py/main.py. The config file pins
-         the text2qti version and ships py/quizbuild.py into Pyodide. -->
+         the text2qti version; main.py fetches py/quizbuild.py itself. -->
     <script type="py" src="py/main.py" config="pyscript.toml"></script>
 </body>
 </html>
