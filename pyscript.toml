@@ -1,0 +1,12 @@
+# PyScript / Pyodide configuration for index.html.
+#
+# packages: installed by micropip from PyPI on page load (with their
+#   dependencies, e.g. Markdown and bespon). Pinned so a new upstream
+#   release can't change output or break the page without us noticing.
+packages = ["text2qti==0.8.0"]
+
+# files: fetched over HTTP and written into Pyodide's in-memory file system
+#   so py/main.py can `import quizbuild`. (This is why the site must be
+#   served over http(s); opening index.html via file:// will not work.)
+[files]
+"./py/quizbuild.py" = "./quizbuild.py"

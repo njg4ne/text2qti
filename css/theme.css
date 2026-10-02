@@ -1,0 +1,286 @@
+/*
+ * theme.css — shared look and feel for every page on the site.
+ *
+ * Colors come from the Washington and Lee brand guide
+ * (my.wlu.edu → Brand Guide → Color and Typography). Raw brand colors are
+ * declared once as --wl-* tokens; everything else uses *semantic* tokens
+ * (--color-text, --color-link, ...) so a page never hard-codes a hex value.
+ *
+ * Contrast notes (WCAG 2.2, measured against white unless noted):
+ *   W&L Blue  #003087  ~12.6:1  body links, primary button, header background
+ *   Slate     #425563   ~7.6:1  secondary text
+ *   Brick     #861F41   ~9.6:1  error text
+ *   Cannan    #00843D   ~4.8:1  success text (AA for normal text)
+ *   Blue Ridge #0076A8  ~4.9:1  focus ring (non-text needs 3:1)
+ *   Liberty Hall Grey #707372 ~4.8:1  form-control borders (non-text needs 3:1)
+ *   Spring Leaf, Autumn Leaf, Blue Sky and Footbridge Grey fail as text on
+ *   white, so they are only used as decorative accents / tinted backgrounds.
+ *
+ * Typography: the brand's primary face is Palatino (headings); Arial is the
+ * approved sans-serif substitute (body/UI). Sizes never drop below 1rem for
+ * reading text or 0.9375rem (15px) for secondary text.
+ */
+
+/* ---------- Tokens ---------- */
+:root {
+  /* Brand palette (primary) */
+  --wl-blue: #003087;
+  --wl-liberty-grey: #707372;
+  /* Brand palette (secondary — keep under ~50% of any design) */
+  --wl-slate: #425563;
+  --wl-brick: #861f41;
+  --wl-blue-ridge: #0076a8;
+  --wl-cannan-green: #00843d;
+  --wl-autumn-leaf: #f0b323;
+  --wl-blue-sky: #99d6ea;
+  --wl-footbridge-grey: #cbc4bc;
+
+  /* Semantic colors */
+  --color-bg: #f5f3f0;          /* very light tint of Footbridge Grey */
+  --color-surface: #ffffff;
+  --color-text: #1b2631;        /* near-black, slate-leaning */
+  --color-text-muted: var(--wl-slate);
+  --color-link: var(--wl-blue);
+  --color-border: var(--wl-footbridge-grey);   /* decorative dividers */
+  --color-control-border: var(--wl-liberty-grey); /* inputs: needs 3:1 */
+  --color-focus: var(--wl-blue-ridge);
+  --color-code-bg: #eef1f5;
+  --color-header-bg: var(--wl-blue);
+  --color-header-text: #ffffff;
+  --color-header-accent: var(--wl-blue-sky);
+  --color-success: var(--wl-cannan-green);
+  --color-error: var(--wl-brick);
+  --color-error-bg: #f9edf1;
+  --color-warning-bg: #fdf4dc;
+  --color-warning-edge: var(--wl-autumn-leaf);
+  --color-info-bg: #e9f5fa;
+  --color-info-edge: var(--wl-blue-ridge);
+
+  /* Type */
+  --font-heading: Palatino, "Palatino Linotype", "Book Antiqua", "URW Palladio L", "Times New Roman", serif;
+  --font-body: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --text-sm: 0.9375rem;  /* smallest size used anywhere */
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.625rem;
+
+  /* Spacing scale (one place to tune density) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+
+  --radius: 0.5rem;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+  --page-max: 72rem;
+
+  /* The brand is a light design; tell the UA so form controls match. */
+  color-scheme: light;
+}
+
+/* ---------- Reset / base ---------- */
+/* border-box everywhere so padding + border never push an element past its
+   container (the old page's source of stray scrollbars). */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+  line-height: 1.2;
+  margin: 0;
+}
+
+p,
+ol,
+ul,
+pre {
+  margin: 0;
+}
+
+a {
+  color: var(--color-link);
+  text-underline-offset: 0.15em;
+}
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* One consistent, highly visible focus indicator for keyboard users. */
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+code,
+pre,
+kbd,
+textarea {
+  font-family: var(--font-mono);
+}
+
+code,
+kbd {
+  font-size: 0.95em;
+  background: var(--color-code-bg);
+  border-radius: 0.25rem;
+  padding: 0.05em 0.3em;
+}
+
+pre {
+  font-size: var(--text-sm);
+  background: var(--color-code-bg);
+  border-radius: var(--radius);
+  padding: var(--space-3);
+  overflow-x: auto;      /* long lines scroll inside the block, not the page */
+  white-space: pre;
+}
+
+/* Visually hidden but still announced by screen readers. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--space-4);
+  top: -10rem;
+  z-index: 10;
+  background: var(--color-surface);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius);
+}
+.skip-link:focus {
+  top: var(--space-2);
+}
+
+/* ---------- Site header / footer (shared by all pages) ---------- */
+.site-header {
+  background: var(--color-header-bg);
+  color: var(--color-header-text);
+  border-bottom: 4px solid var(--color-header-accent);
+}
+
+.site-header__inner,
+.site-footer__inner {
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-5);
+}
+
+.site-header h1 {
+  font-size: var(--text-xl);
+}
+
+.site-header a {
+  color: inherit;
+}
+
+.site-header p {
+  font-size: var(--text-sm);
+}
+
+.site-footer {
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.site-footer ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-5);
+}
+
+/* ---------- Reusable pieces ---------- */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--space-4);
+}
+
+/* Callouts: tinted background + colored left edge. Text stays dark so the
+   contrast never depends on the accent color. */
+.callout {
+  border-left: 4px solid var(--color-info-edge);
+  background: var(--color-info-bg);
+  border-radius: var(--radius);
+  padding: var(--space-3) var(--space-4);
+}
+.callout--warning {
+  border-left-color: var(--color-warning-edge);
+  background: var(--color-warning-bg);
+}
+.callout > * + * {
+  margin-top: var(--space-1);
+}
+
+.button {
+  font: inherit;
+  font-weight: 700;
+  border-radius: var(--radius);
+  padding: var(--space-2) var(--space-5);
+  border: 2px solid var(--wl-blue);
+  cursor: pointer;
+  min-height: 2.75rem;   /* comfortable touch target */
+}
+.button--primary {
+  background: var(--wl-blue);
+  color: #fff;
+}
+.button--primary:hover:not(:disabled) {
+  background: #00246a;
+}
+.button--secondary {
+  background: var(--color-surface);
+  color: var(--wl-blue);
+}
+.button--secondary:hover:not(:disabled) {
+  background: var(--color-info-bg);
+}
+.button:disabled {
+  cursor: progress;
+  opacity: 0.6;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .button {
+    transition: background-color 120ms ease;
+  }
+}

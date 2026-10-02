@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Importing Your Quiz .zip into Canvas — text2qti in the Browser</title>
+    <meta name="description" content="Step-by-step: put the QTI .zip from text2qti into a Canvas New Quizzes item bank, or import it directly as a quiz.">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/doc.css">
+</head>
+<body>
+    <a class="skip-link" href="#content">Skip to content</a>
+
+    <header class="site-header">
+        <div class="site-header__inner">
+            <p class="site-header__title"><a href="index.html">text2qti in the Browser</a></p>
+            <p><a href="index.html">← Back to the quiz builder</a></p>
+        </div>
+    </header>
+
+    <main id="content" class="doc">
+        <h1>Importing your quiz .zip into Canvas</h1>
+
+        <p class="doc__lede">The builder gives you a <strong>.zip</strong> file in the QTI format. Canvas can read it directly, so <strong>do not unzip it</strong>; upload the .zip itself.</p>
+
+        <aside class="callout callout--warning">
+            <p><strong>Safari users:</strong> Safari may unzip downloads automatically, leaving a folder instead of a .zip. If that happens, turn off <em>Safari → Settings → General → “Open ‘safe’ files after downloading”</em> and download again (or use the .zip from your Trash).</p>
+        </aside>
+
+        <nav aria-labelledby="toc-title" class="doc__toc">
+            <h2 id="toc-title">On this page</h2>
+            <ol>
+                <li><a href="#enable">Turn on New Quizzes (if needed)</a></li>
+                <li><a href="#bank">Put the questions in an item bank (recommended)</a></li>
+                <li><a href="#use-bank">Use the item bank in a quiz</a></li>
+                <li><a href="#direct">Alternative: import as a whole quiz</a></li>
+                <li><a href="#check">Check your questions</a></li>
+            </ol>
+        </nav>
+
+        <section aria-labelledby="enable">
+            <h2 id="enable">1. Turn on New Quizzes (if needed)</h2>
+            <p>Item banks belong to Canvas <strong>New Quizzes</strong>. Many courses have it on already. If you don’t see New Quizzes or Item Banks:</p>
+            <ol>
+                <li>In your course, open <strong>Settings</strong> (bottom of the course menu).</li>
+                <li>Open the <strong>Feature Options</strong> tab (some versions call it <strong>Features</strong>).</li>
+                <li>Find <strong>New Quizzes</strong> and switch it on.</li>
+            </ol>
+            <p>If the switch is missing or locked, your Canvas administrator controls it. Contact your school’s Canvas support.</p>
+        </section>
+
+        <section aria-labelledby="bank">
+            <h2 id="bank">2. Put the questions in an item bank (recommended)</h2>
+            <p>An item bank is a reusable collection of questions. Importing into a bank lets you build several quizzes (or randomized versions of one quiz) from the same questions.</p>
+            <ol>
+                <li>Open <strong>Item Banks</strong>. Depending on your Canvas version, it is either a link in the course menu, or inside any New Quiz under <strong>Build</strong> → the item bank icon in the right-hand toolbar.</li>
+                <li>Create a new item bank and give it a name, for example the quiz title.</li>
+                <li>Check the box to <strong>share the bank with the course</strong> so it’s available in this class (and to co-teachers).</li>
+                <li>On the new bank, open the <strong>⋯</strong> (more options) menu and choose <strong>Import Content</strong>.</li>
+                <li>Choose the <strong>.zip</strong> you downloaded from this site and confirm the import.</li>
+                <li>Wait for the import to finish. Large quizzes can take a minute. Then open the bank to see your questions.</li>
+            </ol>
+        </section>
+
+        <section aria-labelledby="use-bank">
+            <h2 id="use-bank">3. Use the item bank in a quiz</h2>
+            <ol>
+                <li>Go to <strong>Quizzes</strong> and create a quiz, choosing <strong>New Quizzes</strong> if asked.</li>
+                <li>On the quiz’s <strong>Build</strong> page, press the <strong>+</strong> button and choose <strong>Item Bank</strong>.</li>
+                <li>Pick your bank. You can add specific questions, or add the whole bank and have Canvas pick a <em>random</em> number of questions for each student.</li>
+                <li>Set points, time limits and due dates as usual, then <strong>Publish</strong>.</li>
+            </ol>
+        </section>
+
+        <section aria-labelledby="direct">
+            <h2 id="direct">4. Alternative: import as a whole quiz</h2>
+            <p>If you just want one ready-made quiz, without a bank:</p>
+            <ol>
+                <li>Open the course <strong>Settings</strong> and choose <strong>Import Course Content</strong>.</li>
+                <li>For <strong>Content Type</strong>, choose <strong>QTI .zip file</strong>.</li>
+                <li>Choose your .zip. If you see <strong>Import existing quizzes as New Quizzes</strong>, check it.</li>
+                <li>Press <strong>Import</strong> and wait until the job shows <strong>Completed</strong>.</li>
+                <li>The quiz appears under <strong>Quizzes</strong>, unpublished, with the title from your <code>Quiz title:</code> line.</li>
+            </ol>
+        </section>
+
+        <section aria-labelledby="check">
+            <h2 id="check">5. Check your questions</h2>
+            <ul>
+                <li>Preview the quiz (or use <strong>Student View</strong>) before publishing to check wording, answers and math.</li>
+                <li>Each question is worth 1 point unless you set <code>Points: 2</code> (etc.) in your quiz text.</li>
+                <li>Short-answer questions only accept the exact answers you listed with <code>*</code>, so list common spellings.</li>
+                <li>To fix a mistake, edit the text in the builder, download a new .zip and import it again, or edit the question directly in Canvas.</li>
+            </ul>
+        </section>
+
+        <p class="doc__note">Canvas changes its menus from time to time, so some labels may be slightly different in your course. For the official instructions, search the Canvas Instructor Guide for “import QTI” or “item banks”.</p>
+
+        <p><a class="button button--primary" href="index.html">Back to the quiz builder</a></p>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <ul>
+                <li>Concept &amp; architecture: <a href="https://n.gardella.cc/">Nicholas Gardella, Ph.D.</a></li>
+                <li>Parser: <a href="https://github.com/gpoore/text2qti">text2qti</a> by Geoffrey M. Poore (BSD-3-Clause)</li>
+                <li>Built with AI coding tools under Nicholas Gardella's direction</li>
+            </ul>
+        </div>
+    </footer>
+</body>
+</html>

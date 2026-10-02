@@ -1,0 +1,83 @@
+/*
+ * doc.css — layout for long-form help pages (canvas-import.html).
+ * Normal document flow: the page scrolls, and line length is capped at a
+ * comfortable reading measure (~70 characters).
+ */
+
+.site-header .site-header__title {  /* beats `.site-header p` in theme.css */
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 700;
+}
+
+.site-header__title a {
+  text-decoration: none;
+}
+
+.doc {
+  max-width: 44rem;
+  margin-inline: auto;
+  padding: var(--space-6) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+.doc h1 {
+  font-size: 2rem;
+  color: var(--wl-blue);
+}
+
+.doc h2 {
+  font-size: 1.375rem;
+  color: var(--wl-blue);
+  margin-bottom: var(--space-2);
+  /* Keep headings clear of the top edge when jumped to from the TOC. */
+  scroll-margin-top: var(--space-4);
+}
+
+.doc section > * + * {
+  margin-top: var(--space-3);
+}
+
+.doc ol,
+.doc ul {
+  padding-left: 1.5rem;
+}
+
+.doc li + li {
+  margin-top: var(--space-2);
+}
+
+.doc__lede {
+  font-size: var(--text-lg);
+}
+
+.doc__toc {
+  border-left: 4px solid var(--wl-blue-sky);
+  padding-left: var(--space-4);
+}
+
+.doc__toc h2 {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text);
+}
+
+.doc__note {
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+}
+
+.doc .button {
+  display: inline-block;
+  text-decoration: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}

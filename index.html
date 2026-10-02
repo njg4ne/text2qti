@@ -2,196 +2,135 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>In-Browser text2qti Quiz Package Generator</title>
-    <!-- Tailwind CSS Core -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- PyScript core styling and JS modules -->
-    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>text2qti in the Browser — Canvas Quiz Builder</title>
+    <meta name="description" content="Write quiz questions as plain text and download a Canvas-ready QTI .zip, entirely in your browser.">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/app.css">
+    <!--
+      PyScript loads the Pyodide (CPython compiled to WebAssembly) runtime.
+      The version is pinned so an upstream release cannot silently change
+      behaviour. See README.md for performance and security notes.
+    -->
     <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
 </head>
-<body class="bg-gray-50 text-gray-900 font-sans min-h-screen flex flex-col">
+<body>
+    <a class="skip-link" href="#quiz-input">Skip to the quiz editor</a>
 
-    <!-- Top Navigation Header -->
-    <header class="bg-blue-900 text-white shadow-md p-4">
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-            <div>
-                <h1 class="text-2xl font-bold tracking-tight">text2qti Browser Compiler</h1>
-                <p class="text-sm text-blue-200 mt-0.5">Generate Canvas-ready QTI 1.2 quiz packages client-side.</p>
-            </div>
-            <!-- Roles and Project Attributions -->
-            <div class="text-right text-xs bg-blue-950/50 p-3 rounded-lg border border-blue-800/60 max-w-md">
-                <p class="font-semibold text-blue-300">Credits & Attributions:</p>
-                <p class="mt-1"><span class="text-white font-medium">Concept & Architecture:</span> Conceived and designed by <a href="https://n.gardella.cc/" target="_blank" class="underline hover:text-white">Nicholas Gardella, Ph.D.</a> (Assistant Professor of Computer Science), who architected this in-browser approach to text2qti.</p>
-                <p><span class="text-white font-medium">Core Parser Engine:</span> <a href="https://github.com/gpoore/text2qti" target="_blank" class="underline hover:text-white">text2qti</a> by Geoffrey M. Poore (BSD-3-Clause).</p>
-                <p><span class="text-white font-medium">Implementation Assistance:</span> AI coding tools, under Nicholas Gardella's direction.</p>
-            </div>
+    <header class="site-header">
+        <div class="site-header__inner">
+            <h1>text2qti in the Browser</h1>
+            <p>Created by <a href="https://n.gardella.cc/">Nicholas Gardella, Ph.D.</a> · Write a quiz as plain text, download a Canvas-ready <abbr title="Question and Test Interoperability">QTI</abbr> .zip</p>
         </div>
     </header>
 
-    <!-- Main Workspace Container -->
-    <main class="flex-grow max-w-6xl w-full mx-auto p-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
-        <!-- Left Sidebar: Guide and Syntax Checklist -->
-        <section class="lg:col-span-1 bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex flex-col gap-4">
-            <h2 class="text-lg font-bold text-gray-800 border-b pb-2">Quiz Formulation Guide</h2>
-            
-            <div class="text-xs space-y-3 text-gray-600 overflow-y-auto max-h-[65vh] pr-1">
-                <div>
-                    <p class="font-semibold text-gray-800">Quiz Context Metadata (Top Level)</p>
-                    <pre class="bg-gray-100 p-2 rounded mt-1 text-gray-700 font-mono text-[11px]">Quiz title: Sample Assessment
-Quiz description: Basic testing metrics.</pre>
-                </div>
-                <div>
-                    <p class="font-semibold text-gray-800">Multiple-Choice Options</p>
-                    <pre class="bg-gray-100 p-2 rounded mt-1 text-gray-700 font-mono text-[11px]">1. What is the value of 3 + 4?
+    <main class="app">
+        <!-- Editor first in source order: it is the main task, so it comes
+             first for screen readers and on phones. On wide screens app.css
+             places it in the right-hand column. -->
+        <section class="editor card" aria-labelledby="editor-title">
+            <div class="editor__header">
+                <h2 id="editor-title"><label for="quiz-input">Quiz text</label></h2>
+                <button type="button" id="example-btn" class="button button--secondary" disabled>Load example</button>
+            </div>
+
+            <textarea id="quiz-input" spellcheck="false" autocomplete="off"
+                      aria-describedby="status"
+                      placeholder="Quiz title: My Quiz&#10;&#10;1. Your first question?&#10;*a) Correct answer&#10;b) Wrong answer"></textarea>
+
+            <div class="editor__actions">
+                <!-- role="status" + aria-live: screen readers announce
+                     loading/success/error messages without moving focus. -->
+                <output id="status" class="status" role="status" aria-live="polite" data-state="loading">
+                    Loading the Python runtime… (the first visit can take a few seconds)
+                </output>
+                <button type="button" id="generate-btn" class="button button--primary" disabled>Download QTI .zip</button>
+            </div>
+
+            <!-- Invitation for people who have never imported a QTI file. -->
+            <p class="callout">
+                <strong>Got a .zip and not sure what to do with it?</strong>
+                <a href="canvas-import.html">Learn how to import it into Canvas</a>.
+            </p>
+
+            <pre id="error-output" class="error-output" role="alert" hidden></pre>
+        </section>
+        <!-- Syntax reference (left column on wide screens). Each <pre data-example> is also
+             used by the "Load example" button, so the guide and the sample
+             quiz can never drift apart. -->
+        <aside class="guide card" aria-labelledby="guide-title">
+            <h2 id="guide-title">How to write questions</h2>
+            <div class="guide__body" tabindex="0" aria-label="Question syntax examples (scrollable)">
+                <section>
+                    <h3>Quiz title and description</h3>
+                    <pre data-example>Quiz title: Sample Assessment
+Quiz description: Basic practice questions.</pre>
+                </section>
+                <section>
+                    <h3>Multiple choice</h3>
+                    <pre data-example>1. What is the value of 3 + 4?
 a) 6
 *b) 7
 c) 12</pre>
-                </div>
-                <div>
-                    <p class="font-semibold text-gray-800">Multiple-Answer Arrays</p>
-                    <pre class="bg-gray-100 p-2 rounded mt-1 text-gray-700 font-mono text-[11px]">2. Pick the target prime numbers:
+                    <p>Put <code>*</code> before the correct choice.</p>
+                </section>
+                <section>
+                    <h3>Multiple answers</h3>
+                    <pre data-example>2. Select all of the prime numbers:
 [ ] 4
 [*] 7
 [*] 11</pre>
-                </div>
-                <div>
-                    <p class="font-semibold text-gray-800">Numerical Range Entries</p>
-                    <pre class="bg-gray-100 p-2 rounded mt-1 text-gray-700 font-mono text-[11px]">3. Approximate the value of pi:
+                </section>
+                <section>
+                    <h3>Numerical answer</h3>
+                    <pre data-example>3. Approximate the value of pi:
 = 3.1416 +- 0.001</pre>
-                </div>
-                <div>
-                    <p class="font-semibold text-gray-800">Short-Answer (Fill-in-the-Blank) Text</p>
-                    <pre class="bg-gray-100 p-2 rounded mt-1 text-gray-700 font-mono text-[11px]">4. Name the algorithm that swaps adjacent items:
+                </section>
+                <section>
+                    <h3>Short answer (text / fill in the blank)</h3>
+                    <pre data-example>4. Name the algorithm that swaps adjacent items:
 *   bubble sort
 *   bubblesort
 *   Bubble Sort</pre>
-                    <p class="mt-1">Each <code class="font-mono">*</code> line is one acceptable answer (plain text, one line each).</p>
-                </div>
-                <div>
-                    <p class="font-semibold text-gray-800">Essay & Submission Inputs</p>
-                    <pre class="bg-gray-100 p-2 rounded mt-1 text-gray-700 font-mono text-[11px]">5. Describe the runtime of bubblesort.
-____
-
-6. Upload your codebase artifact.
+                    <p>Each <code>*</code> line is one accepted answer (plain text, one line each).</p>
+                </section>
+                <section>
+                    <h3>Essay</h3>
+                    <pre data-example>5. Describe the runtime of bubble sort.
+____</pre>
+                </section>
+                <section>
+                    <h3>File upload</h3>
+                    <pre data-example>6. Upload your source code.
 ^^^^</pre>
-                </div>
-                <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded text-amber-900">
-                    <p class="font-bold">Execution Caveat</p>
-                    <p class="mt-0.5">Subprocess execution features (<code class="font-mono text-xs">.run</code> blocks) are completely restricted by WebAssembly security models. Avoid using programmatic python script cells within the text input fields.</p>
-                </div>
+                </section>
+                <section class="callout callout--warning">
+                    <h3>Limitations in the browser</h3>
+                    <p>Executable code blocks (<code>.run</code>) are turned off, and images must be web links (there is no local disk to read them from). Long question text that wraps onto a new line must be indented.</p>
+                </section>
+                <p>Full syntax: <a href="https://github.com/gpoore/text2qti#readme">text2qti documentation</a>.</p>
             </div>
-        </section>
+        </aside>
 
-        <!-- Right Panels: Editor Workspace and Console Monitors -->
-        <section class="lg:col-span-2 flex flex-col gap-4">
-            <!-- Text area compiler input zone -->
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex flex-col flex-grow min-h-[450px]">
-                <label for="quiz-input" class="text-sm font-semibold text-gray-700 mb-2 block">Text Editor (Write markup here)</label>
-                <textarea id="quiz-input" class="w-full flex-grow p-4 font-mono text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none bg-gray-50 focus:bg-white transition-colors" placeholder="Quiz title: Practice Examination&#10;Quiz description: Evaluation criteria&#10;&#10;1. Provide an example question?&#10;*a) Correct alternative choice&#10;b) Incorrect option baseline"></textarea>
-                
-                <div class="mt-4 flex justify-between items-center gap-4">
-                    <div class="flex items-center gap-2">
-                        <!-- Dynamic State Status Monitor Indicators -->
-                        <span id="status-display" class="text-sm font-medium text-blue-700 animate-pulse"></span>
-                    </div>
-                    <button id="generate-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-6 rounded-lg shadow transition-colors flex items-center justify-center min-w-[160px]">
-                        Compile to QTI Zip
-                    </button>
-                </div>
-            </div>
-
-            <!-- Validation Diagnostic Error Monitoring Console -->
-            <div id="error-display" class="hidden bg-red-50 border-l-4 border-red-500 p-4 rounded-xl text-red-900 font-mono text-xs whitespace-pre-wrap shadow-sm"></div>
-        </section>
     </main>
 
-    <!-- Invisible Anchor Utility Component Hooked into Browser Blob Systems -->
-    <a id="download-link" class="hidden"></a>
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <ul>
+                <li>Concept &amp; architecture: <a href="https://n.gardella.cc/">Nicholas Gardella, Ph.D.</a></li>
+                <li>Parser: <a href="https://github.com/gpoore/text2qti">text2qti</a> by Geoffrey M. Poore (BSD-3-Clause)</li>
+                <li>Built with AI coding tools under Nicholas Gardella's direction</li>
+            </ul>
+            <p>Your quiz never leaves your computer.</p>
+        </div>
+    </footer>
 
-    <!-- Configuration Matrix instructing PyScript to provision environment extensions -->
-    <script type="py" config='{"packages": ["text2qti", "Markdown"]}'>
-        import sys
-        import os
-        from js import Blob, document, URL, Uint8Array
-        from pyodide.ffi import create_proxy
+    <noscript>
+        <p class="callout callout--warning">This tool needs JavaScript and WebAssembly to run text2qti in your browser.</p>
+    </noscript>
 
-        def compile_source_text(event):
-            # Target nodes isolation
-            error_panel = document.getElementById("error-display")
-            status_panel = document.getElementById("status-display")
-            
-            # Flush existing console states
-            error_panel.classList.add("hidden")
-            error_panel.innerText = ""
-            status_panel.innerText = "Parsing contents..."
-            
-            try:
-                # Capture standard text element configurations
-                raw_input = document.getElementById("quiz-input").value
-                if not raw_input.strip():
-                    raise ValueError("Syntax validation failed: The text editor target buffer cannot be blank.")
-                
-                # File system environment declarations
-                file_in = "quiz.txt"
-                file_out = "quiz.zip"
-                
-                # Discard stale residual objects from transient system space
-                if os.path.exists(file_in):
-                    os.remove(file_in)
-                if os.path.exists(file_out):
-                    os.remove(file_out)
-                
-                # Commit raw configurations into transient files
-                with open(file_in, "w", encoding="utf-8") as f:
-                    f.write(raw_input)
-                
-                # Update arguments vector matching CLI definitions
-                sys.argv = ["text2qti", file_in]
-                
-                # Lazy instantiation initialization of parser engines
-                import text2qti.cmdline
-                
-                status_panel.innerText = "Generating binaries..."
-                text2qti.cmdline.main()
-                
-                if not os.path.exists(file_out):
-                    raise IOError("Binary error: The compilation process terminated without spawning an output archive.")
-                
-                # Extract generated binary file structures
-                with open(file_out, "rb") as f:
-                    compiled_bytes = f.read()
-                
-                # Stream binary streams across context runtimes using JS interop types
-                js_uint8_array = Uint8Array.new(compiled_bytes)
-                file_blob = Blob.new([js_uint8_array], {type: "application/zip"})
-                transient_url = URL.createObjectURL(file_blob)
-                
-                # Dispatch virtual interaction to prompt system file download windows
-                link_node = document.getElementById("download-link")
-                link_node.href = transient_url
-                link_node.download = "quiz.zip"
-                link_node.click()
-                
-                # Garbage collection resource clear-downs
-                URL.revokeObjectURL(transient_url)
-                status_panel.innerText = "Download triggered successfully!"
-                
-            except Exception as system_exception:
-                status_panel.innerText = ""
-                error_panel.innerText = f"[text2qti compilation failure Exception raised]\n{str(system_exception)}"
-                error_panel.classList.remove("hidden")
-
-        def mount_application():
-            trigger_button = document.getElementById("generate-btn")
-            trigger_button.addEventListener("click", create_proxy(compile_source_text))
-            status_panel = document.getElementById("status-display")
-            status_panel.className = "text-sm font-medium text-green-700 font-sans"
-            status_panel.innerText = "PyScript Engine Ready."
-
-        # Bootstrap runtime integrations
-        mount_application()
-    </script>
+    <!-- The Python side of the app: see py/main.py. The config file pins
+         the text2qti version and ships py/quizbuild.py into Pyodide. -->
+    <script type="py" src="py/main.py" config="pyscript.toml"></script>
 </body>
 </html>
