@@ -18,11 +18,12 @@ Write quiz questions as plain text and download a Canvas-ready QTI 1.2 `.zip`, w
 | `CHANGELOG.md` | How the app was developed and who directed it. |
 | `AGENTS.md` | Rules and checks for AI coding agents and maintainers ([agents.md](https://agents.md/) format). |
 | `agents.html` | Student-friendly explainer of agent context files. It also renders `AGENTS.md`. |
+| `skills/upgrading-dependencies/SKILL.md` | Step-by-step checklist for upgrading PyScript or text2qti, linked from `AGENTS.md`. |
 | `scripts/check_examples.py` | Compiles the guide examples with text2qti and prints `OK` or the error. |
 | `css/theme.css` | Shared design tokens (W&L brand colors and type), base styles, and header/footer. |
 | `css/app.css` | Builder layout: fits one screen on desktop and stacks on phones. |
 | `css/doc.css` | Layout for long-form help pages. |
-| `pyscript.toml` | Pins `text2qti==0.8.0` and copies `py/quizbuild.py` into Pyodide. |
+| `pyscript.toml` | Pins `text2qti==0.8.0`. `py/main.py` fetches `py/quizbuild.py` itself so the package cache stays on. |
 | `py/main.py` | Browser glue: button handlers, status messages, and the download. |
 | `py/quizbuild.py` | Pure-Python compile step (`build_qti_zip`). It doesn't use browser APIs, so you can test it with plain CPython. |
 

@@ -92,6 +92,14 @@ Nicholas asked for agent context that any tool can use and that stays lean, writ
 - Added `scripts/check_examples.py`, a pass/fail check that compiles the guide examples with text2qti. Agents and humans can use it to verify their own changes.
 - Added `agents.html`, which summarizes the key ideas for students in skimmable cards and renders the real `AGENTS.md` below them. Added an "AI agent guide" link to every page footer.
 
+### 8. A skill for dependency upgrades (2026-10-02)
+
+Nicholas asked why there were no skills and then told Claude to use its recommended approach. Claude recommended a single skill, for upgrading dependencies, because that is the riskiest workflow and the PyScript 2026.7 cache change had already been missed once. Everyday rules stay in `AGENTS.md`.
+
+- Added `skills/upgrading-dependencies/SKILL.md`, a 6-step checklist: find every pin, read the release notes for the APIs this repo uses, update the pins, run `check_examples.py`, test in a browser, and update `NOTICE.md` and this changelog.
+- Put it in a tool-neutral `skills/` folder linked from `AGENTS.md`, because Nicholas requires agent context to work through `AGENTS.md`.
+- Updated `agents.html` to explain the skill, and fixed a stale README line about `pyscript.toml`.
+
 ## How oversight worked
 
 - Every change started from a written instruction by Nicholas. The AI tools did not choose the project's goals, its license, or what was published.

@@ -20,7 +20,7 @@ A static website that runs text2qti (Python) in the browser through PyScript/Pyo
 - The builder page must fit one desktop screen. The layout depends on `min-height: 0` on flex and grid children in `css/app.css`; keep it.
 - Put user-visible text into the DOM with `textContent`, never `innerHTML`. The one exception is `js/render-text.js`, which escapes its input first.
 - Keep `run_code_blocks` set to `False` in `py/quizbuild.py`.
-- Pin versions. To upgrade PyScript (`index.html`) or text2qti (`pyscript.toml`), read the release notes, rerun every check above, and update the versions in `NOTICE.md`.
+- Pin versions. To upgrade PyScript, Pyodide, or text2qti, follow `skills/upgrading-dependencies/SKILL.md`.
 - Do not list local files under `[files]` in `pyscript.toml`. It turns off PyScript's package cache. `py/main.py` fetches `py/quizbuild.py` itself instead.
 - The guide's `<pre data-example>` blocks double as the sample quiz. Keep them valid text2qti. Wrapped question lines must be indented.
 

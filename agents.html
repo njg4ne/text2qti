@@ -35,6 +35,10 @@
                     <dd>A “README for agents”: an <a href="https://agents.md/">open format</a> read by many tools. It holds the commands, rules and gotchas that aren't obvious from the code. It is the only agent-context file in this repo, so there is one copy to maintain.</dd>
                 </div>
                 <div class="card">
+                    <dt><code>skills/upgrading-dependencies/SKILL.md</code></dt>
+                    <dd>A <em>skill</em>: a step-by-step checklist for one rare, risky job. <code>AGENTS.md</code> points to it, so agents read it only when upgrading PyScript or text2qti. It lives in a plain <code>skills/</code> folder rather than one tool's folder, so any agent can follow the link.</dd>
+                </div>
+                <div class="card">
                     <dt><code>README.md</code></dt>
                     <dd>For humans: what the project is, how it is laid out, and how to run it. <code>AGENTS.md</code> links to it instead of repeating it.</dd>
                 </div>
@@ -58,7 +62,7 @@
                 <li class="card"><strong>Give a feedback loop.</strong> A command with a clear pass/fail result lets the agent check its own work: run, fix, repeat.</li>
                 <li class="card"><strong>Avoid time-sensitive facts.</strong> “Use the newest version” goes stale; “pin versions, read the release notes before upgrading” doesn't.</li>
                 <li class="card"><strong>Use consistent terms.</strong> Pick one name for each thing (“builder page”, “guide examples”) and keep using it.</li>
-                <li class="card"><strong>Disclose progressively.</strong> <em>Skills</em> are folders of instructions an agent loads only when relevant: first just a name and description, then the body (ideally under 500 lines), then extra files on demand. This repo is small enough that one short file is enough.</li>
+                <li class="card"><strong>Disclose progressively.</strong> <em>Skills</em> are folders of instructions an agent loads only when relevant: first just a name and description, then the body (ideally under 500 lines), then extra files on demand. This repo keeps everyday rules in <code>AGENTS.md</code> and puts one rare, risky workflow, dependency upgrades, in a skill that is read only when needed.</li>
                 <li class="card"><strong>Keep a human in charge.</strong> Agents propose and build; a person decides, reviews and publishes. The changelog makes that oversight visible.</li>
             </ul>
         </section>
