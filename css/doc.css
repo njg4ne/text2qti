@@ -137,3 +137,25 @@
 .rendered pre {
   white-space: pre-wrap;
 }
+
+/* ---------- Skimmable point grids (agents.html) ---------- */
+.points {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: var(--space-3);
+}
+
+.doc .points li + li {
+  margin-top: 0;   /* the grid gap handles spacing */
+}
+
+.points dt {
+  font-weight: 700;
+}
+
+.points dd {
+  margin: var(--space-1) 0 0;
+}

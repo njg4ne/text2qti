@@ -16,6 +16,9 @@ Write quiz questions as plain text and download a Canvas-ready QTI 1.2 `.zip`, w
 | `LICENSE` | GNU AGPL-3.0, verbatim. |
 | `NOTICE.md` | Copyright, intended use, AGPL section 7 terms, third-party licenses, and trademarks. |
 | `CHANGELOG.md` | How the app was developed and who directed it. |
+| `AGENTS.md` | Rules and checks for AI coding agents and maintainers ([agents.md](https://agents.md/) format). |
+| `agents.html` | Student-friendly explainer of agent context files. It also renders `AGENTS.md`. |
+| `scripts/check_examples.py` | Compiles the guide examples with text2qti and prints `OK` or the error. |
 | `css/theme.css` | Shared design tokens (W&L brand colors and type), base styles, and header/footer. |
 | `css/app.css` | Builder layout: fits one screen on desktop and stacks on phones. |
 | `css/doc.css` | Layout for long-form help pages. |

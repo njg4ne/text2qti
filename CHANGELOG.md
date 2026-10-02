@@ -84,6 +84,14 @@ Nicholas asked why the app still used PyScript 2024.1.1 when 2026.7.3 was out. T
 
 Nicholas added a `CNAME` file on GitHub so GitHub Pages serves the site at `text2qti.gardella.cc`. Claude's local commits were then rebased on top of that commit before pushing, so the history stays linear.
 
+### 7. Agent context for future maintenance (2026-10-02)
+
+Nicholas asked for agent context that any tool can use and that stays lean, written to the [agents.md](https://agents.md/) format and Anthropic's skill-authoring best practices, plus an optional page explaining it to students. Nicholas then ruled out a Claude-specific `CLAUDE.md`, so `AGENTS.md` is the only agent-context file.
+
+- Added `AGENTS.md`. It holds only the rules and gotchas not obvious from the code: how to run and check the site, the design and accessibility constraints, the license-header and attribution rules, the changelog convention, and the Git habits. It links to the README instead of repeating it.
+- Added `scripts/check_examples.py`, a pass/fail check that compiles the guide examples with text2qti. Agents and humans can use it to verify their own changes.
+- Added `agents.html`, which summarizes the key ideas for students in skimmable cards and renders the real `AGENTS.md` below them. Added an "AI agent guide" link to every page footer.
+
 ## How oversight worked
 
 - Every change started from a written instruction by Nicholas. The AI tools did not choose the project's goals, its license, or what was published.

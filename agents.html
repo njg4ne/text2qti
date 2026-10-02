@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!-- SPDX-License-Identifier: AGPL-3.0-or-later · Copyright (C) 2026 Nicholas Gardella -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>How This Repo Works with AI Agents — text2qti in the Browser</title>
+    <meta name="description" content="A student-friendly guide to AGENTS.md and agent skills: what they are, the best practices behind them, and how this repository uses them.">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/doc.css">
+    <script type="module" src="js/render-text.js"></script>
+</head>
+<body>
+    <a class="skip-link" href="#content">Skip to content</a>
+
+    <header class="site-header">
+        <div class="site-header__inner">
+            <p class="site-header__title"><a href="index.html">text2qti in the Browser</a></p>
+            <p><a href="index.html">← Back to the quiz builder</a></p>
+        </div>
+    </header>
+
+    <!-- Static summary for students, followed by the real AGENTS.md rendered
+         by js/render-text.js (headings shifted down so this page keeps one <h1>). -->
+    <main id="content" class="doc">
+        <h1>How this repo works with AI agents</h1>
+
+        <p class="doc__lede">AI coding agents (Claude Code, Copilot, Codex, Cursor, …) start every session knowing nothing about a project. A few small text files in the repository give them the missing context, so they follow the same rules a careful human maintainer would.</p>
+
+        <section aria-labelledby="files">
+            <h2 id="files">The files and what they do</h2>
+            <dl class="points">
+                <div class="card">
+                    <dt><a href="AGENTS.md"><code>AGENTS.md</code></a></dt>
+                    <dd>A “README for agents”: an <a href="https://agents.md/">open format</a> read by many tools. It holds the commands, rules and gotchas that aren't obvious from the code. It is the only agent-context file in this repo, so there is one copy to maintain.</dd>
+                </div>
+                <div class="card">
+                    <dt><code>README.md</code></dt>
+                    <dd>For humans: what the project is, how it is laid out, and how to run it. <code>AGENTS.md</code> links to it instead of repeating it.</dd>
+                </div>
+                <div class="card">
+                    <dt><a href="history.html"><code>CHANGELOG.md</code></a></dt>
+                    <dd>An audit trail recording who asked for each change, what the AI built, and which decisions it made on its own.</dd>
+                </div>
+                <div class="card">
+                    <dt><code>scripts/check_examples.py</code></dt>
+                    <dd>A check that any human or agent can run. It must print <code>OK</code>, which turns “I think it works” into a verifiable result.</dd>
+                </div>
+            </dl>
+        </section>
+
+        <section aria-labelledby="practices">
+            <h2 id="practices">Key ideas from the best-practice guides</h2>
+            <ul class="points">
+                <li class="card"><strong>Be concise.</strong> An agent's context window is shared with the whole conversation. Include only what it can't work out by itself; it already knows what HTML or Git is.</li>
+                <li class="card"><strong>Don't duplicate.</strong> Point to the README instead of copying it. Two copies always drift apart.</li>
+                <li class="card"><strong>Match the freedom to the risk.</strong> Give exact rules for fragile things (license headers, pinned versions, “push only when asked”) and general direction where many approaches work.</li>
+                <li class="card"><strong>Give a feedback loop.</strong> A command with a clear pass/fail result lets the agent check its own work: run, fix, repeat.</li>
+                <li class="card"><strong>Avoid time-sensitive facts.</strong> “Use the newest version” goes stale; “pin versions, read the release notes before upgrading” doesn't.</li>
+                <li class="card"><strong>Use consistent terms.</strong> Pick one name for each thing (“builder page”, “guide examples”) and keep using it.</li>
+                <li class="card"><strong>Disclose progressively.</strong> <em>Skills</em> are folders of instructions an agent loads only when relevant: first just a name and description, then the body (ideally under 500 lines), then extra files on demand. This repo is small enough that one short file is enough.</li>
+                <li class="card"><strong>Keep a human in charge.</strong> Agents propose and build; a person decides, reviews and publishes. The changelog makes that oversight visible.</li>
+            </ul>
+        </section>
+
+        <section aria-labelledby="maintain">
+            <h2 id="maintain">Keeping it useful</h2>
+            <ul>
+                <li>If an agent makes the same mistake twice, add a one-line rule.</li>
+                <li>If a rule never matters, delete it. Shorter files get followed more reliably.</li>
+                <li>Write rules as instructions (“Do not add npm dependencies”), not history (“we removed Tailwind”). History belongs in the changelog.</li>
+            </ul>
+            <p class="doc__note">Sources: <a href="https://github.com/agentsmd/agents.md">agentsmd/agents.md</a> and Anthropic's <a href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices">Skill authoring best practices</a>.</p>
+        </section>
+
+        <section class="rendered" aria-labelledby="actual-file">
+            <h2 id="actual-file">The actual <code>AGENTS.md</code> for this repo</h2>
+            <div data-render-src="AGENTS.md" data-render-format="markdown" data-heading-offset="2" aria-busy="true">
+                <p>Loading… If this text doesn't change, read <a href="AGENTS.md">AGENTS.md</a> directly.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <ul>
+                <li>Concept &amp; architecture: <a href="https://n.gardella.cc/">Nicholas Gardella, Ph.D.</a></li>
+                <li>Parser: <a href="https://github.com/gpoore/text2qti">text2qti</a> by Geoffrey M. Poore (BSD-3-Clause)</li>
+                <li>Built with AI coding tools under Nicholas Gardella's direction</li>
+            </ul>
+            <ul aria-label="Project links">
+                <li><a href="https://github.com/njg4ne/text2qti">Source code</a></li>
+                <li><a href="license.html">License (AGPL-3.0)</a></li>
+                <li><a href="history.html">Development history</a></li>
+                <li><a href="agents.html">AI agent guide</a></li>
+            </ul>
+        </div>
+    </footer>
+</body>
+</html>

@@ -6,7 +6,8 @@
  * display the same words with no copy to keep in sync.
  *
  * Usage: any element with  data-render-src="FILE"  data-render-format="markdown|license"
- * is fetched and its contents replaced with rendered HTML. Put a fallback
+ * (and optionally  data-heading-offset="N"  to demote Markdown headings by N
+ * levels when the page already has its own <h1>) is fetched and its contents replaced with rendered HTML. Put a fallback
  * link to the raw file inside the element; it stays visible if fetching fails.
  *
  * Why not a Markdown library? The inputs are a few files we write ourselves,
@@ -57,7 +58,7 @@ function inline(escaped) {
 }
 
 /** Render our Markdown subset to an HTML string. */
-export function renderMarkdown(source) {
+export function renderMarkdown(source, headingOffset = 0) {
   const lines = source.replace(/\r\n?/g, "\n").split("\n");
   const out = [];
   let para = [];   // lines of the current paragraph
@@ -87,7 +88,7 @@ export function renderMarkdown(source) {
     const heading = line.match(/^(#{1,4})\s+(.*)$/);
     if (heading) {
       flushPara(); flushList();
-      const level = heading[1].length;
+      const level = Math.min(heading[1].length + headingOffset, 6);
       const html = inline(escapeHtml(heading[2]));
       out.push(`<h${level} id="${slugify(html)}">${html}</h${level}>`);
       continue;
@@ -171,7 +172,8 @@ async function renderInto(el) {
   try {
     const res = await fetch(src);
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-    el.innerHTML = render(await res.text()); // safe: renderers escape all input
+    const offset = Number(el.dataset.headingOffset) || 0;
+    el.innerHTML = render(await res.text(), offset); // safe: renderers escape all input
     el.setAttribute("aria-busy", "false");
     // Honor #fragment links into content that did not exist at page load.
     if (location.hash) document.getElementById(location.hash.slice(1))?.scrollIntoView();
