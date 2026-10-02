@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 Nicholas Gardella
 """
 main.py — browser glue for index.html (runs inside PyScript/Pyodide).
 

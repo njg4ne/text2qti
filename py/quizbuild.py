@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 Nicholas Gardella
 """
 quizbuild.py — pure-Python quiz compilation (no browser APIs).
 

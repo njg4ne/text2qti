@@ -10,6 +10,12 @@ Write quiz questions as plain text and download a Canvas-ready QTI 1.2 `.zip`, w
 |---|---|
 | `index.html` | The quiz builder: editor, syntax guide, and download button. |
 | `canvas-import.html` | Help page: how to import the `.zip` into a Canvas item bank or quiz. |
+| `license.html` | Renders `NOTICE.md` and `LICENSE` as a themed page. |
+| `history.html` | Renders `CHANGELOG.md`, the development history and audit trail. |
+| `js/render-text.js` | Small, dependency-free renderer that turns those text files into HTML. |
+| `LICENSE` | GNU AGPL-3.0, verbatim. |
+| `NOTICE.md` | Copyright, intended use, AGPL section 7 terms, third-party licenses, and trademarks. |
+| `CHANGELOG.md` | How the app was developed and who directed it. |
 | `css/theme.css` | Shared design tokens (W&L brand colors and type), base styles, and header/footer. |
 | `css/app.css` | Builder layout: fits one screen on desktop and stacks on phones. |
 | `css/doc.css` | Layout for long-form help pages. |
@@ -59,3 +65,9 @@ GitHub Pages (or any static host) works as-is.
 pip install text2qti==0.8.0
 cd py && python -c "import quizbuild; print(quizbuild.build_qti_zip('1. 2+2?\n*a) 4\nb) 5')[0])"
 ```
+
+## License
+
+Copyright (C) 2026 Nicholas Gardella. Licensed under the **GNU Affero General Public License v3.0 or later** (`AGPL-3.0-or-later`), with additional terms under AGPL section 7. Those terms require keeping the attribution and marking modified versions, and they grant no trademark rights. See [`NOTICE.md`](NOTICE.md), which also lists the third-party licenses (text2qti and its dependencies under BSD-3-Clause, PyScript under Apache-2.0, Pyodide under MPL-2.0). The app is intended for education at public and non-profit institutions.
+
+How the app was built, and by whom, is recorded in [`CHANGELOG.md`](CHANGELOG.md).

@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: AGPL-3.0-or-later · Copyright (C) 2026 Nicholas Gardella */
 /*
  * doc.css — layout for long-form help pages (canvas-import.html).
  * Normal document flow: the page scrolls, and line length is capped at a
@@ -80,4 +81,59 @@
   html {
     scroll-behavior: smooth;
   }
+}
+
+/* ---------- Pages rendered from repository text (license.html, history.html) ---------- */
+/* Flow spacing for content injected by js/render-text.js (at any depth,
+   since the license text sits inside a wrapper <div>). */
+.rendered :where(h1, h2, h3, h4, p, ul, ol, pre, details, div) + * {
+  margin-top: var(--space-3);
+}
+
+.rendered h2,
+.rendered h3 {
+  margin-top: var(--space-6);
+}
+
+.rendered h3 {
+  font-size: var(--text-lg);
+  color: var(--wl-blue);
+}
+
+.rendered h4 {
+  font-family: var(--font-heading);
+  font-size: 1.125rem;
+  color: var(--wl-blue);
+  margin-top: var(--space-5);
+  scroll-margin-top: var(--space-4);
+}
+
+/* License clauses like "a) ..." and sample notices are indented in the source. */
+.rendered .indented {
+  margin-left: var(--space-5);
+  padding-left: var(--space-3);
+  border-left: 2px solid var(--color-border);
+}
+
+.license-toc {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-3) var(--space-4);
+}
+
+.license-toc summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.license-toc ol {
+  list-style: none;
+  padding-left: 0;
+  margin-top: var(--space-2);
+}
+
+/* Long license lines wrap rather than forcing sideways scrolling. */
+.rendered pre {
+  white-space: pre-wrap;
 }
